@@ -39,6 +39,16 @@ pub fn load_dotenv(_: proc_macro::TokenStream) -> proc_macro::TokenStream {
     (quote! {}).into()
 }
 
+/// Load the `.env.xxx` file and panic if the file is missing.
+#[proc_macro]
+pub fn load_dotenv_from_filename(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    let _input: String = input.to_string();
+    let _input: &str = _input.trim_matches('"');
+    dotenv::from_filename(_input).expect(format!("Failed to load {} file", _input).as_str());
+
+    (quote! {}).into()
+}
+
 /// Load the `.env` file but don't panic if the file is missing.
 #[proc_macro]
 pub fn try_load_dotenv(_: proc_macro::TokenStream) -> proc_macro::TokenStream {
